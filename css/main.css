@@ -512,6 +512,93 @@ em { font-style: normal; font-weight: inherit; color: var(--accent); }
   color: rgba(255,255,255,0.4);
 }
 
+/* ─── Share ─── */
+.share-section {
+  border-top: 1px solid var(--rule);
+  padding: 80px 56px;
+  display: grid;
+  place-items: center;
+}
+.share-inner {
+  width: 100%;
+  max-width: 1180px;
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 48px;
+  align-items: center;
+}
+.share-copy .section-kicker { margin-bottom: 12px; }
+.share-headline {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(28px, 3.4vw, 44px);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  margin: 0 0 16px;
+}
+.share-sub {
+  font-size: 16px;
+  color: var(--ink-dim);
+  max-width: 44ch;
+  margin: 0;
+}
+.share-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: flex-start;
+}
+.share-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border: 1px solid var(--ink);
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  text-decoration: none;
+  border-radius: 999px;
+  transition: transform 120ms ease, background 120ms ease, color 120ms ease;
+}
+.share-btn:hover {
+  background: var(--ink);
+  color: var(--paper);
+  transform: translateY(-1px);
+}
+.share-btn--primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+.share-btn--primary:hover {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: #fff;
+}
+.share-btn.is-copied {
+  background: var(--ink);
+  color: var(--paper);
+}
+/* Hide native button on devices without Web Share API */
+.share-btn--primary.is-hidden { display: none; }
+/* Hide SMS button on desktop where it's useless */
+@media (hover: hover) and (pointer: fine) {
+  .share-btn--sms { display: none; }
+}
+
+@media (max-width: 800px) {
+  .share-section { padding: 56px 24px; }
+  .share-inner {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+}
+
 /* ─── Footer ─── */
 .site-foot {
   border-top: 1px solid var(--ink);

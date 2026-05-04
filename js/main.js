@@ -146,8 +146,72 @@
     });
   }
 
+  // ─── Share buttons ───
+  function initShare() {
+    var SHARE_URL = 'https://boomcatcher.app/';
+    var SHARE_TITLE = 'Boom Catcher — Take back your street.';
+    var SHARE_TEXT = "Tortured by loud cars or bikes? Boom Catcher catches them on video the moment they bust 88 dB. Receipts for your city council.";
+
+    var nativeBtn = document.getElementById('share-native');
+    var copyBtn = document.getElementById('share-copy');
+    var copyLabel = document.getElementById('share-copy-label');
+    var xLink = document.getElementById('share-x');
+    var fbLink = document.getElementById('share-fb');
+    var waLink = document.getElementById('share-wa');
+    var smsLink = document.getElementById('share-sms');
+
+    var u = encodeURIComponent(SHARE_URL);
+    var t = encodeURIComponent(SHARE_TEXT);
+    var combined = encodeURIComponent(SHARE_TEXT + ' ' + SHARE_URL);
+
+    if (xLink) xLink.href = 'https://twitter.com/intent/tweet?text=' + t + '&url=' + u;
+    if (fbLink) fbLink.href = 'https://www.facebook.com/sharer/sharer.php?u=' + u;
+    if (waLink) waLink.href = 'https://wa.me/?text=' + combined;
+    if (smsLink) {
+      // iOS uses ?body=, Android uses ?body= too — universal form
+      smsLink.href = 'sms:?&body=' + combined;
+    }
+
+    if (nativeBtn) {
+      if (typeof navigator !== 'undefined' && typeof navigator.share === 'function') {
+        nativeBtn.addEventListener('click', function () {
+          navigator.share({
+            title: SHARE_TITLE,
+            text: SHARE_TEXT,
+            url: SHARE_URL,
+          }).catch(function () { /* user cancelled — ignore */ });
+        });
+      } else {
+        nativeBtn.classList.add('is-hidden');
+      }
+    }
+
+    if (copyBtn && copyLabel) {
+      copyBtn.addEventListener('click', async function () {
+        try {
+          await navigator.clipboard.writeText(SHARE_URL);
+        } catch (err) {
+          // Fallback for old browsers
+          var ta = document.createElement('textarea');
+          ta.value = SHARE_URL;
+          document.body.appendChild(ta);
+          ta.select();
+          try { document.execCommand('copy'); } catch (e) {}
+          document.body.removeChild(ta);
+        }
+        copyBtn.classList.add('is-copied');
+        copyLabel.textContent = 'Copied ✓';
+        setTimeout(function () {
+          copyBtn.classList.remove('is-copied');
+          copyLabel.textContent = 'Copy link';
+        }, 1800);
+      });
+    }
+  }
+
   document.addEventListener('DOMContentLoaded', function () {
     initHeroForm();
     initStickyBar();
+    initShare();
   });
 })();
